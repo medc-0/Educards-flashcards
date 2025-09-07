@@ -4,13 +4,13 @@ A modern, responsive flashcard application built with React, Tailwind CSS v3, an
 
 ## Features
 
-- 🎯 **Smart Study Mode** - Interactive flashcard studying with progress tracking
-- 📚 **Deck Management** - Create, organize, and manage multiple flashcard decks
-- 🎨 **Modern UI** - Beautiful, responsive design with smooth animations
-- 📱 **Mobile Friendly** - Optimized for all device sizes
-- 🚀 **Fast & Lightweight** - Built with Vite for optimal performance
-- 💾 **SQLite Database** - Reliable local data storage
-- 📊 **Study Statistics** - Track your learning progress
+- **Smart Study Mode** - Interactive flashcard studying with progress tracking
+- **Deck Management** - Create, organize, and manage multiple flashcard decks
+- **Modern UI** - Beautiful, responsive design with smooth animations
+- **Mobile Friendly** - Optimized for all device sizes
+- **Fast & Lightweight** - Built with Vite for optimal performance
+- **SQLite Database** - Reliable local data storage
+- **Study Statistics** - Track your learning progress
 
 ## Tech Stack
 
@@ -39,7 +39,7 @@ A modern, responsive flashcard application built with React, Tailwind CSS v3, an
 
 1. **Clone the repository**
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/CodeByMed/Educards-flashcards
    cd Educards
    ```
 
@@ -151,7 +151,6 @@ Educards/
 - [ ] User authentication
 - [ ] Cloud synchronization
 - [ ] Spaced repetition algorithm
-- [ ] Import/export functionality
 - [ ] Desktop app with Electron
 - [ ] Mobile app with React Native
 
@@ -169,7 +168,4 @@ MIT License - see LICENSE file for details
 ## Support
 
 If you encounter any issues or have questions, please open an issue on GitHub.
-
----
-
-Built with ❤️ for effective learning
+And Please leave a star if you liked this repo.
