@@ -21,12 +21,17 @@ A modern, full‑stack flashcards app for fast learning and spaced repetition.
 
 ## Screenshots
 
-![App screenshot 1](frontend/public/screenshots/home.png)
+![Start-Home-Page](frontend/public/screenshots/homepage.png)
 
-![App screenshot 2](frontend/public/screenshots/studying-2.png)
+![Create Deck](frontend/public/screenshots/create_deck.png)
 
-![App screenshot 3](frontend/public/screenshots/Cards-3.png)
+![Create Cards](frontend/public/screenshots/create_card.png)
 
+![Study Session](frontend/public/screenshots/studysession.png)
+
+![Stats](frontend/public/screenshots/stats.png)
+
+![Imports/Exports](frontend/public/screenshots/imports_exports.png)
 ---
 
 ## Tech Stack
