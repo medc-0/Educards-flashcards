@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useDeck } from '../context/DeckContext'
 import { ArrowLeft, RotateCcw, Check, X, BarChart3, Clock } from 'lucide-react'
@@ -19,6 +19,8 @@ export function StudyMode() {
   })
   const [isCompleted, setIsCompleted] = useState(false)
   const [startTime] = useState(Date.now())
+  const [shuffle, setShuffle] = useState(true)
+  const [autoAdvance, setAutoAdvance] = useState(true)
 
   useEffect(() => {
     if (id) {
@@ -32,14 +34,26 @@ export function StudyMode() {
     }
   }, [flashcards])
 
-  const currentCard = flashcards[currentIndex]
-  const progress = flashcards.length > 0 ? ((currentIndex + 1) / flashcards.length) * 100 : 0
+  const studyOrder = useMemo(() => {
+    if (!flashcards || flashcards.length === 0) return []
+    const arr = [...flashcards]
+    if (shuffle) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[arr[i], arr[j]] = [arr[j], arr[i]]
+      }
+    }
+    return arr
+  }, [flashcards, shuffle])
 
-  const handleFlip = () => {
-    setIsFlipped(!isFlipped)
-  }
+  const currentCard = studyOrder[currentIndex]
+  const progress = studyOrder.length > 0 ? ((currentIndex + 1) / studyOrder.length) * 100 : 0
 
-  const handleAnswer = async (difficulty) => {
+  const handleFlip = useCallback(() => {
+    setIsFlipped((f) => !f)
+  }, [])
+
+  const handleAnswer = useCallback(async (difficulty) => {
     if (!currentCard) return
 
     const isCorrect = difficulty <= 2 // Easy or Medium = correct
@@ -59,20 +73,42 @@ export function StudyMode() {
     }
 
     // Move to next card or complete study session
-    if (currentIndex < flashcards.length - 1) {
-      setCurrentIndex(currentIndex + 1)
-      setIsFlipped(false)
+    if (currentIndex < studyOrder.length - 1) {
+      if (autoAdvance) {
+        setTimeout(() => {
+          setCurrentIndex((i) => i + 1)
+          setIsFlipped(false)
+        }, 200)
+      } else {
+        setIsFlipped(false)
+      }
     } else {
       setIsCompleted(true)
     }
-  }
+  }, [autoAdvance, currentCard, currentIndex, studyOrder.length, studyStats, updateFlashcardReview])
 
-  const handleRestart = () => {
+  const handleRestart = useCallback(() => {
     setCurrentIndex(0)
     setIsFlipped(false)
     setStudyStats(prev => ({ ...prev, studied: 0, correct: 0, incorrect: 0 }))
     setIsCompleted(false)
-  }
+  }, [])
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === ' ') {
+        e.preventDefault()
+        handleFlip()
+      }
+      if (e.key === '1') handleAnswer(3)
+      if (e.key === '2') handleAnswer(2)
+      if (e.key === '3') handleAnswer(1)
+      if (e.key === 'ArrowRight' && currentIndex < studyOrder.length - 1) setCurrentIndex((i) => i + 1)
+      if (e.key === 'ArrowLeft' && currentIndex > 0) setCurrentIndex((i) => i - 1)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [handleFlip, handleAnswer, currentIndex, studyOrder.length])
 
   const getDifficultyColor = (difficulty) => {
     switch (difficulty) {
@@ -114,7 +150,7 @@ export function StudyMode() {
     )
   }
 
-  if (flashcards.length === 0) {
+  if (studyOrder.length === 0) {
     return (
       <div className="text-center py-16">
         <div className="text-gray-600 mb-4">No cards to study in this deck</div>
@@ -201,7 +237,7 @@ export function StudyMode() {
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Study Session</h1>
               <p className="text-gray-600">
-                Card {currentIndex + 1} of {flashcards.length}
+                Card {currentIndex + 1} of {studyOrder.length}
               </p>
             </div>
           </div>
@@ -281,6 +317,19 @@ export function StudyMode() {
             </div>
           </div>
         </motion.div>
+      </div>
+
+      {/* Controls */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6 flex items-center justify-center space-x-6">
+        <label className="flex items-center space-x-2 text-sm text-gray-700">
+          <input type="checkbox" checked={shuffle} onChange={(e) => setShuffle(e.target.checked)} />
+          <span>Shuffle</span>
+        </label>
+        <label className="flex items-center space-x-2 text-sm text-gray-700">
+          <input type="checkbox" checked={autoAdvance} onChange={(e) => setAutoAdvance(e.target.checked)} />
+          <span>Auto-advance</span>
+        </label>
+        <div className="text-xs text-gray-500">Shortcuts: [Space]=Flip, 1=Hard, 2=Medium, 3=Easy</div>
       </div>
 
       {/* Answer Buttons */}

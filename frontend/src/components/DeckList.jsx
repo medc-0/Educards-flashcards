@@ -149,3 +149,5 @@ function DeckListInner() {
     </div>
   )
 }
+
+export const DeckList = memo(DeckListInner)

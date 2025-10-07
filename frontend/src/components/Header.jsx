@@ -23,7 +23,7 @@ export function Header() {
             </div>
             <div className="flex flex-col">
               <span className="text-xl font-bold text-gray-900">Educards</span>
-              <span className="text-xs text-gray-500 -mt-1">by Edunomics</span>
+              <span className="text-xs text-gray-500 -mt-1">by medc-0</span>
             </div>
           </Link>
           
