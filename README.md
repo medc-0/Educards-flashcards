@@ -1,171 +1,156 @@
-# Educards - Smart Flashcards Web App
+# Educards
 
-A modern, responsive flashcard application built with React, Tailwind CSS v3, and SQLite backend. Perfect for effective learning and studying.
+A modern, full‑stack flashcards app for fast learning and spaced repetition.
 
-## Features
+[![Static Badge](https://img.shields.io/badge/Frontend-React%2018-0A7EA4?logo=react&logoColor=white)](https://react.dev)
+[![Static Badge](https://img.shields.io/badge/Build-Vite%205-646CFF?logo=vite&logoColor=white)](https://vitejs.dev)
+[![Static Badge](https://img.shields.io/badge/Styles-Tailwind%20CSS%203-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+[![Static Badge](https://img.shields.io/badge/Backend-Express-000000?logo=express&logoColor=white)](https://expressjs.com)
+[![Static Badge](https://img.shields.io/badge/Database-SQLite3-044A64?logo=sqlite&logoColor=white)](https://www.sqlite.org)
 
-- **Smart Study Mode** - Interactive flashcard studying with progress tracking
-- **Deck Management** - Create, organize, and manage multiple flashcard decks
-- **Modern UI** - Beautiful, responsive design with smooth animations
-- **Mobile Friendly** - Optimized for all device sizes
-- **Fast & Lightweight** - Built with Vite for optimal performance
-- **SQLite Database** - Reliable local data storage
-- **Study Statistics** - Track your learning progress
+---
+
+## Overview
+
+- **Smart study**: deck management, interactive flips, difficulty ratings, progress.
+- **Spaced repetition**: configurable scheduling and review statistics.
+- **Fast DX**: Vite dev server, hot reload, and a Windows helper script.
+- **Clean UI**: Tailwind, motion, and iconography.
+
+---
+
+## Screenshots
+
+![App screenshot 1](frontend/public/screenshots/home.png)
+
+![App screenshot 2](frontend/public/screenshots/studying-2.png)
+
+![App screenshot 3](frontend/public/screenshots/Cards-3.png)
+
+---
 
 ## Tech Stack
 
-### Frontend
-- React 18
-- Vite
-- Tailwind CSS v3
-- React Router
-- Framer Motion
-- Lucide React Icons
+- **Frontend**: React 18, Vite, Tailwind CSS, React Router, Framer Motion, Lucide Icons
+- **Backend**: Node.js, Express, SQLite3, CORS, UUID
 
-### Backend
-- Node.js
-- Express.js
-- SQLite3
-- CORS
-- UUID
+---
 
-## Getting Started
+## Quickstart
 
 ### Prerequisites
-- Node.js (v16 or higher)
-- npm
+- Node.js >= 18
+- npm >= 9
 
-### Installation
+### Install
+```bash
+# Clone
+git clone https://github.com/CodeByMed/Educards-flashcards
+cd Educards
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/CodeByMed/Educards-flashcards
-   cd Educards
-   ```
+# Backend deps
+cd backend && npm install
 
-2. **Install backend dependencies**
-   ```bash
-   cd backend
-   npm install
-   ```
+# Frontend deps
+cd ../frontend && npm install
+```
 
-3. **Install frontend dependencies**
-   ```bash
-   cd ../frontend
-   npm install
-   ```
+### Run (Windows)
+```powershell
+# From repo root
+./start-dev.bat
+```
+- Backend: `http://localhost:5000`
+- Frontend: `http://localhost:3000`
 
-### Running the Application
+### Run (manual)
+```bash
+# Backend
+cd backend && npm run dev
 
-1. **Start the backend server**
-   ```bash
-   cd backend
-   npm run dev
-   ```
-   The backend will run on http://localhost:5000
+# Frontend (new terminal)
+cd frontend && npm run dev
+```
 
-2. **Start the frontend development server**
-   ```bash
-   cd frontend
-   npm run dev
-   ```
-   The frontend will run on http://localhost:3000
-
-3. **Open your browser**
-   Navigate to http://localhost:3000 to use the application
+---
 
 ## Usage
 
-### Creating Your First Deck
-1. Click "Create Deck" on the home page
-2. Enter a name and optional description
-3. Click "Create Deck"
+1) Create a deck, add cards (front/back), choose difficulty.
+2) Start study mode, flip cards, rate recall (Easy/Medium/Hard).
+3) Track accuracy and review queue over time.
 
-### Adding Flashcards
-1. Open a deck by clicking on it
-2. Click "Add Card" to create new flashcards
-3. Enter the front (question) and back (answer) text
-4. Set the difficulty level (Easy, Medium, Hard)
-5. Click "Create Card"
+---
 
-### Studying
-1. Click the "Study" button on any deck with cards
-2. Click cards to flip them and reveal answers
-3. Rate your knowledge: Easy, Medium, or Hard
-4. Track your progress and accuracy
+## API (summary)
+
+- `GET /api/decks` — list decks
+- `POST /api/decks` — create deck
+- `GET /api/decks/:id` — deck by id
+- `PUT /api/decks/:id` — update deck
+- `DELETE /api/decks/:id` — delete deck
+- `GET /api/decks/:deckId/flashcards` — list cards
+- `POST /api/decks/:deckId/flashcards` — create card
+- `PUT /api/flashcards/:id` — update card
+- `DELETE /api/flashcards/:id` — delete card
+- `PUT /api/flashcards/:id/review` — update review stats
+
+---
+
+## Build
+```bash
+# Frontend production build
+cd frontend && npm run build
+
+# Start backend (production)
+cd ../backend && npm start
+```
+
+---
 
 ## Project Structure
-
-```
+```text
 Educards/
-├── backend/
-│   ├── server.js          # Express server
-│   ├── package.json       # Backend dependencies
-│   └── .gitignore
-├── frontend/
-│   ├── src/
-│   │   ├── components/    # React components
-│   │   ├── context/       # State management
-│   │   ├── App.jsx        # Main app component
-│   │   ├── main.jsx       # Entry point
-│   │   └── index.css      # Global styles
-│   ├── index.html         # HTML template
-│   ├── package.json       # Frontend dependencies
-│   ├── vite.config.js     # Vite configuration
-│   └── tailwind.config.js # Tailwind configuration
-└── README.md
+├─ backend/
+│  ├─ server.js
+│  ├─ package.json
+│  └─ educards.db
+├─ frontend/
+│  ├─ src/
+│  │  ├─ components/
+│  │  ├─ context/
+│  │  ├─ App.jsx
+│  │  ├─ main.jsx
+│  │  └─ index.css
+│  ├─ index.html
+│  ├─ package.json
+│  ├─ vite.config.js
+│  └─ tailwind.config.js
+└─ README.md
 ```
 
-## API Endpoints
-
-### Decks
-- `GET /api/decks` - Get all decks
-- `POST /api/decks` - Create new deck
-- `GET /api/decks/:id` - Get single deck
-- `PUT /api/decks/:id` - Update deck
-- `DELETE /api/decks/:id` - Delete deck
-
-### Flashcards
-- `GET /api/decks/:deckId/flashcards` - Get deck flashcards
-- `POST /api/decks/:deckId/flashcards` - Create flashcard
-- `PUT /api/flashcards/:id` - Update flashcard
-- `DELETE /api/flashcards/:id` - Delete flashcard
-- `PUT /api/flashcards/:id/review` - Update review stats
-
-## Building for Production
-
-1. **Build the frontend**
-   ```bash
-   cd frontend
-   npm run build
-   ```
-
-2. **Start the production server**
-   ```bash
-   cd backend
-   npm start
-   ```
-
-## Future Enhancements
-
-- [ ] User authentication
-- [ ] Cloud synchronization
-- [ ] Spaced repetition algorithm
-- [ ] Desktop app with Electron
-- [ ] Mobile app with React Native
+---
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
+- Fork, branch, commit, and open a pull request. Keep commits focused.
+- Use clear naming and descriptive messages.
 
 ## License
 
-MIT License - see LICENSE file for details
+MIT — see `LICENSE`.
 
-## Support
+---
 
-If you encounter any issues or have questions, please open an issue on GitHub.
-And Please leave a star if you liked this repo.
+## Version notes
+
+- Node.js: >= 18 recommended
+- React: 18.x
+- Vite: 5.x
+- Tailwind CSS: 3.x
+- Express: 4.x
+- SQLite3: 5.x
+
+All pinned with caret ranges to receive compatible minor/patch updates. Update with `npm install` in each folder to pick up the latest compatible versions.
+
+# medc-0
