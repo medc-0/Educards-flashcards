@@ -1,16 +1,16 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState, memo, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { useDeck } from '../context/DeckContext'
 import { Plus, BookOpen, Play, Edit2, Trash2, BarChart3 } from 'lucide-react'
 import { CreateDeckModal } from './CreateDeckModal'
 import { motion } from 'framer-motion'
 
-export function DeckList() {
+function DeckListInner() {
   const { decks, flashcards, loading, error, deleteDeck } = useDeck()
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [deletingId, setDeletingId] = useState(null)
 
-  const handleDeleteDeck = async (id) => {
+  const handleDeleteDeck = useCallback(async (id) => {
     if (window.confirm('Are you sure you want to delete this deck? This action cannot be undone.')) {
       setDeletingId(id)
       try {
@@ -21,7 +21,16 @@ export function DeckList() {
         setDeletingId(null)
       }
     }
-  }
+  }, [deleteDeck])
+
+  const deckIdToCount = useMemo(() => {
+    const counts = new Map()
+    for (const card of flashcards) {
+      const current = counts.get(card.deck_id) || 0
+      counts.set(card.deck_id, current + 1)
+    }
+    return counts
+  }, [flashcards])
 
   if (loading) {
     return (
@@ -110,7 +119,7 @@ export function DeckList() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2 text-sm text-gray-500">
                   <BarChart3 className="h-4 w-4" />
-                  <span>{flashcards.filter(card => card.deck_id === deck.id).length} cards</span>
+                  <span>{deckIdToCount.get(deck.id) || 0} cards</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Link
